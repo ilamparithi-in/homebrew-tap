@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  audit-casks:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Tap
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+        with:
+          core: false
+          cask: true
+
+      - name: Cache Homebrew Bundler RubyGems
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+
+      - name: Install Bundler RubyGems
+        run: brew install-bundler-gems
+
+      - name: Run brew readall
+        run: brew readall ${{ github.repository }}
+
+      - name: Run brew style
+        run: brew style ${{ github.repository }}
+
+      - name: Run brew audit
+        run: brew audit --tap=${{ github.repository }} --cask --online --strict

@@ -1,0 +1,34 @@
+name: Update Cask
+
+on:
+  workflow_dispatch:
+    inputs:
+      cask:
+        description: 'Cask name to update'
+        required: true
+        default: 'wallie'
+      force:
+        description: 'Force re-compute and update'
+        type: boolean
+        default: false
+  repository_dispatch:
+    types: [update_cask]
+
+jobs:
+  update-cask:
+    name: Update Cask
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Cask Updater Script
+        env:
+          CASK_NAME: ${{ github.event.client_payload.cask || github.event.inputs.cask || 'wallie' }}
+          FORCE_UPDATE: ${{ github.event.inputs.force || 'false' }}
+        run: |
+          chmod +x ".github/scripts/update-${CASK_NAME}.sh"
+          "./.github/scripts/update-${CASK_NAME}.sh"
