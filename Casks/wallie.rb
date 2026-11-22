@@ -1,9 +1,9 @@
 cask "wallie" do
   arch arm: "-arm64"
 
-  version "1.3.0"
-  sha256 arm:   "a66a15d49eeff4cbfc9bceab5f3f4d00e2992bb9be5140db39190d16506f8f3b",
-         intel: "7c4102f2c5c2f00e7a28997c36ec85551eb00c4c51eb896a21c5820d60774573"
+  version "1.4.0"
+  sha256 arm:   "5a30281c938e11d46d2066dd54ab3d07086d2acff80cdaa2a2c2406bf141922a",
+         intel: "42a63ad86afcddf7e781b8e2d5d0f8bc28c010a074b762a00f47d0b118c2904e"
 
   url "https://github.com/ilamparithi-in/WAllie/releases/download/v#{version}/WAllie-#{version}#{arch}.dmg"
   name "WAllie"
